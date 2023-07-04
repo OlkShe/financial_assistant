@@ -35,6 +35,9 @@
 
         <!-- Main Content -->
         <div id="content">
+            <!-- Topbar -->
+            <div th:replace="fragments/top_bar"></div>
+            <!-- End of Topbar -->
             <div th:replace="${bodyFragment}"></div>
         </div>
         <!-- End of Main Content -->

@@ -1,35 +1,34 @@
 package org.financial.assistant.security;
 
-import org.financial.assistant.models.Person;
+import org.financial.assistant.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class PersonDetails implements UserDetails {
-    private final Person person;
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
+    private final User user;
 
-    public PersonDetails(Person person) {
-        this.person = person;
+    public UserDetails(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // SHOW_ACCOUNT, WITHDRAW_MONEY, SEND_MONEY
         // ROLE_ADMIN, ROLE_USER - это роли
-        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return this.person.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.person.getUsername();
+        return this.user.getUsername();
     }
 
     @Override
@@ -52,7 +51,7 @@ public class PersonDetails implements UserDetails {
         return true;
     }
 
-    public Person getPerson() {
-        return this.person;
+    public User getUser() {
+        return this.user;
     }
 }

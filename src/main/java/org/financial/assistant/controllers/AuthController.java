@@ -1,5 +1,8 @@
-package ru.alishev.springcourse.FirstSecurityApp.controllers;
+package org.financial.assistant.controllers;
 
+import org.financial.assistant.models.User;
+import org.financial.assistant.services.RegistrationService;
+import org.financial.assistant.util.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -7,26 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.alishev.springcourse.FirstSecurityApp.models.Person;
-import ru.alishev.springcourse.FirstSecurityApp.services.RegistrationService;
-import ru.alishev.springcourse.FirstSecurityApp.util.PersonValidator;
 
 import javax.validation.Valid;
 
-/**
- * @author Neil Alishev
- */
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-
     private final RegistrationService registrationService;
-    private final PersonValidator personValidator;
+    private final UserValidator userValidator;
 
     @Autowired
-    public AuthController(RegistrationService registrationService, PersonValidator personValidator) {
+    public AuthController(RegistrationService registrationService, UserValidator userValidator) {
         this.registrationService = registrationService;
-        this.personValidator = personValidator;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/login")
@@ -35,19 +31,25 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person) {
+    public String registrationPage(@ModelAttribute("user") User user) {
         return "auth/registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person") @Valid Person person,
+    public String performRegistration(@ModelAttribute("user") @Valid User user,
                                       BindingResult bindingResult) {
-        personValidator.validate(person, bindingResult);
+        userValidator.validate(user, bindingResult);
 
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
+            // Print all error messages
+            for (var error : bindingResult.getAllErrors()) {
+                System.out.println("Error: " + error.getDefaultMessage());
+            }
+
             return "/auth/registration";
+        }
 
-        registrationService.register(person);
+        registrationService.register(user);
 
         return "redirect:/auth/login";
     }

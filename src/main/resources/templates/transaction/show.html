@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Transactions</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-xl-12 col-lg-7">
+            <!-- Card -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Transaction Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>ID:</strong> <span th:text="${transaction.id}"></span></p>
+                            <p><strong>Name:</strong> <span th:text="${transaction.name}"></span></p>
+                            <p><strong>Amount:</strong> <span th:text="${transaction.amount}"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Category:</strong> <span th:text="${transaction.category.name}"></span></p>
+                            <p><strong>Is Accounting:</strong> <span th:text="${transaction.isAccounting}"></span></p>
+                            <p><strong>Date:</strong> <span th:text="${transaction.createdAt}"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Full description:</strong> <span th:text="${transaction.description}"></span></p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a th:href="@{/transaction/export/pdf/{id}(id=${transaction.id})}" class="btn btn-primary">Export transaction to PDF</a>
+                        <a th:href="@{/transaction/{id}/edit(id=${transaction.id})}" class="btn btn-secondary">Edit</a>
+                        <form th:action="@{/transaction/{id}(id=${transaction.id})}" th:method="DELETE">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /.container-fluid -->

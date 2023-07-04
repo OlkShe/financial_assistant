@@ -1,63 +1,78 @@
 package org.financial.assistant.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "Person")
-public class Person {
+@Table(name = "Users")
+public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @NotEmpty(message = "The name cannot be empty")
-    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters long")
-    @Column(name = "username")
+    @Column(name = "login", nullable = false, unique = true)
+    @NotEmpty(message = "The login cannot be empty")
     private String username;
 
-    @Min(value = 1900, message = "Year of birth must be greater than 1900")
-    @Column(name = "year_of_birth")
-    private int yearOfBirth;
+    @Column(name = "email")
+    @NotEmpty(message = "The email cannot be empty")
+    @Email(message = "Invalid email address")
+    private String email;
+
+    @Column(name = "first_name")
+    @NotEmpty(message = "The first name cannot be empty")
+    private String firstName;
+
+    @Column(name = "last_name")
+    @NotEmpty(message = "The last name cannot be empty")
+    private String lastName;
 
     @Column(name = "password")
+    @NotEmpty(message = "The password cannot be empty")
     private String password;
 
     @Column(name = "role")
     private String role;
 
-    public Person() {
+    public User() {
     }
 
-    public Person(String username, int yearOfBirth) {
+    public User(String username, String email, String firstName, String lastName, String password) {
         this.username = username;
-        this.yearOfBirth = yearOfBirth;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getEmail() {
+        return email;
     }
 
-    public String getUsername() {
-        return username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public int getYearOfBirth() {
-        return yearOfBirth;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -76,13 +91,23 @@ public class Person {
         this.role = role;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role='" + role + '\'' +
                 ", username='" + username + '\'' +
-                ", yearOfBirth=" + yearOfBirth +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
